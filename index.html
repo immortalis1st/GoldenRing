@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маршрут по Золотому кольцу</title>
+    <style>
+        /* Стили остаются без изменений */
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background-color: #f0f8ff; }
+        .day-card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .location { margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+        .route-btn { background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: background 0.3s; }
+        .route-btn:hover { background: #2980b9; }
+        .address { color: #7f8c8d; font-size: 0.9em; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div id="route-container"></div>
+
+    <script>
+        const routeData = [
+            {
+                day: 1,
+                city: "Ярославль",
+                locations: [
+                    { name: "Спасо-Преображенский монастырь", address: "Богоявленская пл., 25" },
+                    { name: "Волжская набережная и Стрелка", address: "Волжская набережная" },
+                    { name: "Парк «Тысячелетия Ярославля»", address: "ул. Подзеленье" },
+                    { name: "Музей «Музыка и время»", address: "Волжская набережная, 33А" },
+                    { name: "Кафе «Иоанн Васильевич»", address: "Революционный пр., 4" }
+                ]
+            },
+            {
+                day: 2,
+                city: "Кострома",
+                locations: [
+                    { name: "Ипатьевский монастырь", address: "ул. Просвещения, 1" },
+                    { name: "Лосиная ферма «Сумароково»", address: "д. Сумароково" },
+                    { name: "Торговые ряды", address: "ул. Советская, 2" },
+                    { name: "Беседка Островского", address: "набережная р. Волги" },
+                    { name: "Ресторан «Снегурочка»", address: "ул. Лагерная, 38" }
+                ]
+            },
+            {
+                day: 3,
+                city: "Иваново",
+                locations: [
+                    { name: "Музей ивановского ситца", address: "ул. Батурина, 11/42" },
+                    { name: "Парк им. Степанова", address: "ул. Смольная" },
+                    { name: "Арт-сквер «Галерея Граффити»", address: "ул. 10 Августа" },
+                    { name: "Щудровская палатка", address: "ул. 10 Августа, 36" },
+                    { name: "Кафе «Фабрика»", address: "ул. Красной Армии, 1" }
+                ]
+            },
+            {
+                day: 4,
+                city: "Суздаль",
+                locations: [
+                    { name: "Суздальский Кремль", address: "ул. Кремлёвская, 27" },
+                    { name: "Музей деревянного зодчества", address: "ул. Пушкарская, 27Б" },
+                    { name: "Покровский монастырь", address: "ул. Покровская, 76" },
+                    { name: "Смотровая площадка у реки Каменка", address: "ул. Коровники" },
+                    { name: "Ресторан «Гнездо пекаря»", address: "ул. Ленина, 63" }
+                ]
+            },
+            {
+                day: 5,
+                city: "Владимир",
+                locations: [
+                    { name: "Золотые ворота", address: "ул. Большая Московская, 1" },
+                    { name: "Успенский собор", address: "ул. Большая Московская, 56" },
+                    { name: "Парк «Липки»", address: "Соборная площадь" },
+                    { name: "Музей пряника", address: "ул. Большая Московская, 40" },
+                    { name: "Кафе «Владимирская вишня»", address: "ул. Гагарина, 7" }
+                ]
+            },
+            {
+                day: 6,
+                city: "Переславль-Залесский",
+                locations: [
+                    { name: "Плещеево озеро", address: "национальный парк «Плещеево озеро»" },
+                    { name: "Музей «Ботик Петра I»", address: "с. Веськово, ул. Петра I, 77" },
+                    { name: "Дендрологический сад", address: "ул. Журавлёва, 1Б" },
+                    { name: "Никитский монастырь", address: "ул. Запрудная, 20" },
+                    { name: "Кафе «Ботик»", address: "ул. Советская, 11" }
+                ]
+            },
+            {
+                day: 7,
+                city: "Сергиев Посад",
+                locations: [
+                    { name: "Троице-Сергиева Лавра", address: "Свято-Троицкая Сергиева Лавра" },
+                    { name: "Конный двор", address: "ул. 1-ой Ударной Армии, 2" },
+                    { name: "Музей игрушки", address: "пр. Красной Армии, 123" },
+                    { name: "Парк «Скитские пруды»", address: "пр. Красной Армии" },
+                    { name: "Ресторан «Гостевая изба»", address: "пр. Красной Армии, 134" }
+                ]
+            },
+            {
+                day: 8,
+                city: "Ростов Великий",
+                locations: [
+                    { name: "Ростовский Кремль", address: "ул. Кремль, 1" },
+                    { name: "Озеро Неро", address: "набережная озера Неро" },
+                    { name: "Музей лука", address: "ул. Достоевского, 39" },
+                    { name: "Яковлевский монастырь", address: "ул. Энгельса, 44" },
+                    { name: "Кафе «Собрание»", address: "ул. Карла Маркса, 5" }
+                ]
+            }
+        ];
+
+        // Функции buildRoute и getRoute остаются без изменений
+        function buildRoute() {
+            const container = document.getElementById('route-container');
+            routeData.forEach(day => {
+                const dayHtml = `
+                    <div class="day-card">
+                        <h2>День ${day.day}: ${day.city}</h2>
+                        ${day.locations.map(location => `
+                            <div class="location">
+                                <h3>${location.name}</h3>
+                                <div class="address">Адрес: ${location.address}</div>
+                                <button class="route-btn" onclick="getRoute('${location.address}')">
+                                    Построить маршрут
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.innerHTML += dayHtml;
+            });
+        }
+
+        function getRoute(address) {
+            if (!navigator.geolocation) {
+                alert('Геолокация не поддерживается вашим браузером');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(position => {
+                const coords = position.coords;
+                
+                // Формируем deep link для мобильного приложения
+                const yandexAppUrl = 
+                    `yandexmaps://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}&mode=masstransit`;
+                
+                // Открываем приложение или магазин приложений
+                window.location.href = yandexAppUrl;
+                
+                // Фоллбек для десктопов и браузеров без поддержки
+                setTimeout(() => {
+                    if (!document.hidden) {
+                        const webUrl = `https://yandex.ru/maps/?mode=routes&rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
+                        window.open(webUrl, '_blank');
+                    }
+                }, 500);
+
+            }, error => {
+                alert('Не удалось получить ваше местоположение');
+            });
+        }
+
+        window.onload = buildRoute;
+    </script>
+</body>
+</html>
