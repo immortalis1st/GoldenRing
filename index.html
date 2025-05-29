@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Золотое кольцо России - Премиум маршрут</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛪</text></svg>">
+    <title>Золотое кольцо России - Премиум маршрут с фото</title>
     <style>
         :root {
             --primary: #3498db;
@@ -221,11 +222,17 @@
             margin-bottom: 15px;
         }
         
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
         .route-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
@@ -235,6 +242,7 @@
             gap: 8px;
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
             font-weight: 500;
+            flex-grow: 1;
         }
         
         .route-btn:hover {
@@ -247,8 +255,31 @@
             transform: translateY(1px);
         }
         
-        .route-btn i {
-            font-size: 1.2rem;
+        .photo-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            font-weight: 500;
+            flex-grow: 1;
+        }
+        
+        .photo-btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        .photo-btn:active {
+            transform: translateY(1px);
         }
         
         footer {
@@ -307,6 +338,10 @@
             .stat-value {
                 font-size: 1.8rem;
             }
+            
+            .buttons {
+                flex-direction: column;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -315,7 +350,7 @@
     <div class="container">
         <header>
             <h1>⛪🚗 Золотое кольцо России</h1>
-            <p class="subtitle">Расширенный маршрут по древним городам с храмами, музеями и природными красотами</p>
+            <p class="subtitle">Расширенный маршрут с возможностью просмотра фотографий каждого места</p>
             
             <div class="stats">
                 <div class="stat-card">
@@ -340,7 +375,7 @@
         <div class="day-cards" id="route-container"></div>
         
         <footer>
-            <p>© 2023 Маршрут по Золотому кольцу России | Для наилучшего опыта используйте Яндекс.Браузер с установленным приложением Яндекс.Карт</p>
+            <p>©Amadeus8bit | 2025 Маршрут по Золотому кольцу России | Для наилучшего опыта используйте Яндекс.Браузер с установленным приложением Яндекс.Карт</p>
         </footer>
         
         <div id="loader">Построение маршрута <i class="fas fa-spinner fa-spin"></i></div>
@@ -774,10 +809,16 @@
                                         <i class="fas fa-map-marker-alt"></i> ${location.address}
                                     </div>
                                     <p class="desc">${location.desc}</p>
-                                    <button class="route-btn" 
-                                        onclick="getRoute('${location.address.replace(/'/g, "\\'")}')">
-                                        <i class="fas fa-route"></i> Построить маршрут
-                                    </button>
+                                    <div class="buttons">
+                                        <button class="route-btn" 
+                                            onclick="getRoute('${location.address.replace(/'/g, "\\'")}')">
+                                            <i class="fas fa-route"></i> Маршрут
+                                        </button>
+                                        <button class="photo-btn" 
+                                            onclick="showPhotos('${location.name}', '${day.city}')">
+                                            <i class="fas fa-camera"></i> Фото
+                                        </button>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -842,6 +883,12 @@
             } finally {
                 loader.style.display = 'none';
             }
+        }
+
+        function showPhotos(name, city) {
+            const query = `${name}, ${city}, Россия`;
+            const url = `https://yandex.ru/images/search?text=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
         }
 
         // Инициализация при загрузке
