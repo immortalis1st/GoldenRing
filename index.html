@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Золотое кольцо России - Оптимизированный маршрут</title>
+    <title>Золотое кольцо России - Исправленный маршрут</title>
     <style>
+        /* Стили остаются без изменений из предыдущего оптимизированного кода */
         :root {
             --primary: #3498db;
             --secondary: #2c3e50;
@@ -368,7 +369,7 @@
     <div class="container">
         <header>
             <h1>⛪🚗 Золотое кольцо России</h1>
-            <p class="subtitle">Оптимизированный маршрут с быстрой навигацией и фото-галереей</p>
+            <p class="subtitle">Исправленный маршрут с корректной работой Яндекс.Карт</p>
             
             <div class="stats">
                 <div class="stat-card">
@@ -392,7 +393,7 @@
         
         <div class="day-cards" id="route-container"></div>
         
-        <footer>
+		<footer>
             <p>Amadeus8bit | 2025 Маршрут по Золотому кольцу России</p>
         </footer>
         
@@ -400,7 +401,7 @@
     </div>
 
     <script>
-        // Оптимизированные данные маршрута
+        // Данные маршрута (сокращённые для примера)
         const routeData = [
             {
                 day: 1,
@@ -408,7 +409,7 @@
                 icon: "🏛️",
                 locations: [
                     { 
-                        name: "Спасо-Преображенский монастырь", 
+                                                name: "Спасо-Преображенский монастырь", 
                         address: "Богоявленская пл., 25",
                         category: "religious",
                         desc: "Исторический центр города, где было найдено «Слово о полку Игореве». Обязательно поднимитесь на колокольню для панорамного вида."
@@ -874,7 +875,6 @@
 
         // Настройка обработчиков событий
         function setupEventListeners() {
-            // Делегирование событий для кнопок
             domCache.container.addEventListener('click', (e) => {
                 const target = e.target;
                 
@@ -895,7 +895,7 @@
             });
         }
 
-        // Построение маршрута
+        // Построение маршрута (ИСПРАВЛЕННАЯ ВЕРСИЯ)
         async function getRoute(address) {
             showLoader();
             
@@ -913,40 +913,42 @@
                 });
 
                 const coords = position.coords;
-                openYandexMap(coords, address);
+                
+                // ИСПРАВЛЕНИЕ: Правильное формирование URL
+                const webUrl = `https://yandex.ru/maps/?mode=routes&rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
+                
+                // Для мобильных приложений
+                const isAndroid = /android/i.test(navigator.userAgent);
+                const isYandexBrowser = navigator.userAgent.includes('YaBrowser');
+                
+                let appUrl;
+                if (isAndroid && isYandexBrowser) {
+                    // Intent для Яндекс.Браузера на Android
+                    appUrl = `intent://yandex.ru/maps/?mode=routes&rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}#Intent;scheme=https;package=ru.yandex.yandexmaps;end`;
+                } else {
+                    // Стандартная схема для других браузеров
+                    appUrl = `yandexmaps://maps.yandex.ru/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}&mode=routes`;
+                }
+
+                // Попытка открыть приложение
+                try {
+                    // Для iOS и других браузеров
+                    window.location.href = appUrl;
+                    
+                    // Фолбек на веб-версию
+                    setTimeout(() => {
+                        window.open(webUrl, '_blank');
+                    }, 500);
+                } catch (e) {
+                    // Если не удалось открыть приложение
+                    window.open(webUrl, '_blank');
+                }
 
             } catch (error) {
                 handleGeolocationError(error);
             } finally {
                 hideLoader();
             }
-        }
-
-        // Открытие Яндекс.Карт
-        function openYandexMap(coords, address) {
-            const isAndroid = /android/i.test(navigator.userAgent);
-            const isYandexBrowser = navigator.userAgent.includes('YaBrowser');
-            const baseUrl = `https://yandex.ru/maps/?mode=routes&rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
-            
-            let yandexMapUrl;
-            
-            if (isAndroid && isYandexBrowser) {
-                yandexMapUrl = `intent://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}#Intent;scheme=yandexmaps;package=ru.yandex.yandexmaps;end`;
-            } else {
-                yandexMapUrl = `yandexmaps://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
-            }
-
-            // Попытка открыть приложение
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = yandexMapUrl;
-            document.body.appendChild(iframe);
-
-            // Фолбек на веб-версию
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-                window.open(baseUrl, '_blank');
-            }, 400);
         }
 
         // Показать фото
