@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛪</text></svg>">
-    <title>Золотое кольцо России - Премиум маршрут с фото</title>
+    <title>Золотое кольцо России - Оптимизированный маршрут</title>
     <style>
         :root {
             --primary: #3498db;
@@ -44,9 +43,9 @@
             text-align: center;
             padding: 30px 0;
             margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
         }
@@ -57,110 +56,110 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
+            height: 4px;
             background: linear-gradient(90deg, var(--primary), var(--accent), var(--religious));
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             color: var(--secondary);
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
         }
         
         .subtitle {
-            font-size: 1.3rem;
-            color: #666;
+            font-size: 1.2rem;
+            color: #555;
             max-width: 800px;
-            margin: 0 auto 25px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
         }
         
         .stats {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-top: 20px;
         }
         
         .stat-card {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 15px 25px;
-            border-radius: 15px;
-            min-width: 180px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            border-radius: 12px;
+            min-width: 160px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
         }
         
         .stat-value {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
             line-height: 1;
         }
         
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
         }
         
         .day-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
         
         .day-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            transition: all 0.35s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.03);
         }
         
         .day-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
         }
         
         .day-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--light);
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(52, 152, 219, 0.1);
         }
         
         .day-number {
             background: var(--primary);
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
             flex-shrink: 0;
         }
         
         .day-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--secondary);
+            font-weight: 600;
         }
         
         .day-icon {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-left: auto;
+            opacity: 0.9;
         }
         
         .locations {
@@ -168,9 +167,9 @@
         }
         
         .location {
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 1px dashed #eee;
+            margin-bottom: 22px;
+            padding-bottom: 22px;
+            border-bottom: 1px dashed rgba(0,0,0,0.08);
         }
         
         .location:last-child {
@@ -180,114 +179,101 @@
         }
         
         .location-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .location-name {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: var(--secondary);
             font-weight: 600;
+            margin-bottom: 5px;
         }
         
         .category {
             display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            margin: 5px 5px 5px 0;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.82em;
+            margin: 0 4px 6px 0;
             font-weight: 500;
         }
         
-        .religious { background: #e8f5e9; color: var(--religious); }
-        .museum { background: #fff3e0; color: var(--museum); }
-        .nature { background: #e3f2fd; color: var(--nature); }
-        .food { background: #fbe9e7; color: var(--food); }
-        .history { background: #e0f7fa; color: var(--history); }
+        .religious { background: rgba(232, 245, 233, 0.7); color: var(--religious); }
+        .museum { background: rgba(255, 243, 224, 0.7); color: var(--museum); }
+        .nature { background: rgba(227, 242, 253, 0.7); color: var(--nature); }
+        .food { background: rgba(251, 233, 231, 0.7); color: var(--food); }
+        .history { background: rgba(224, 247, 250, 0.7); color: var(--history); }
         
         .address {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #666;
-            margin: 10px 0;
-            font-size: 0.95rem;
+            color: #555;
+            margin: 8px 0;
+            font-size: 0.92rem;
         }
         
         .desc {
-            color: #555;
+            color: #444;
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
         
         .buttons {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
+        }
+        
+        .route-btn, .photo-btn {
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            flex: 1 1 45%;
+            min-width: 120px;
+            justify-content: center;
+            text-align: center;
         }
         
         .route-btn {
             background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            font-weight: 500;
-            flex-grow: 1;
+            box-shadow: 0 3px 12px rgba(52, 152, 219, 0.25);
         }
         
         .route-btn:hover {
             background: #2980b9;
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
-        }
-        
-        .route-btn:active {
-            transform: translateY(1px);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.35);
         }
         
         .photo-btn {
             background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-            font-weight: 500;
-            flex-grow: 1;
+            box-shadow: 0 3px 12px rgba(231, 76, 60, 0.25);
         }
         
         .photo-btn:hover {
             background: #c0392b;
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
-        }
-        
-        .photo-btn:active {
-            transform: translateY(1px);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.35);
         }
         
         footer {
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             margin-top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
         }
         
         #loader {
@@ -297,33 +283,33 @@
             right: 20px;
             background: var(--primary);
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 50px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             font-weight: 500;
             z-index: 1000;
         }
         
-        .map-icon {
-            font-size: 1.2rem;
-            margin-right: 5px;
+        .btn-icon {
+            font-size: 1.1rem;
         }
         
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 15px;
             }
             
             h1 {
-                font-size: 2.2rem;
+                font-size: 2.1rem;
             }
             
             .subtitle {
-                font-size: 1.1rem;
+                font-size: 1.05rem;
             }
             
             .day-cards {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .day-card {
@@ -331,26 +317,58 @@
             }
             
             .stat-card {
-                min-width: 140px;
+                min-width: 130px;
                 padding: 10px 15px;
             }
             
             .stat-value {
-                font-size: 1.8rem;
+                font-size: 1.7rem;
             }
             
             .buttons {
                 flex-direction: column;
             }
+            
+            .route-btn, .photo-btn {
+                flex: 1 1 100%;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+                padding: 8px 12px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .day-header {
+                flex-wrap: wrap;
+            }
+            
+            .day-title {
+                font-size: 1.4rem;
+            }
+            
+            .location-name {
+                font-size: 1.15rem;
+            }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>⛪🚗 Золотое кольцо России</h1>
-            <p class="subtitle">Расширенный маршрут с возможностью просмотра фотографий каждого места</p>
+            <p class="subtitle">Оптимизированный маршрут с быстрой навигацией и фото-галереей</p>
             
             <div class="stats">
                 <div class="stat-card">
@@ -358,7 +376,7 @@
                     <div class="stat-label">городов</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">55+</div>
+                    <div class="stat-value">56</div>
                     <div class="stat-label">достопримечательностей</div>
                 </div>
                 <div class="stat-card">
@@ -375,13 +393,14 @@
         <div class="day-cards" id="route-container"></div>
         
         <footer>
-            <p>©Amadeus8bit | 2025 Маршрут по Золотому кольцу России | Для наилучшего опыта используйте Яндекс.Браузер с установленным приложением Яндекс.Карт</p>
+            <p>Amadeus8bit | 2025 Маршрут по Золотому кольцу России</p>
         </footer>
         
         <div id="loader">Построение маршрута <i class="fas fa-spinner fa-spin"></i></div>
     </div>
 
     <script>
+        // Оптимизированные данные маршрута
         const routeData = [
             {
                 day: 1,
@@ -785,11 +804,27 @@
             "history": "История"
         };
 
+        // Кэшируем элементы DOM
+        const domCache = {
+            container: null,
+            loader: null
+        };
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            domCache.container = document.getElementById('route-container');
+            domCache.loader = document.getElementById('loader');
+            
+            buildRoute();
+            setupEventListeners();
+        });
+
+        // Построение маршрута
         function buildRoute() {
-            const container = document.getElementById('route-container');
+            let html = '';
             
             routeData.forEach(day => {
-                const dayHtml = `
+                html += `
                     <div class="day-card">
                         <div class="day-header">
                             <div class="day-number">${day.day}</div>
@@ -797,42 +832,74 @@
                             <div class="day-icon">${day.icon}</div>
                         </div>
                         <div class="locations">
-                            ${day.locations.map(location => `
-                                <div class="location">
-                                    <div class="location-header">
-                                        <h3 class="location-name">${location.name}</h3>
-                                    </div>
-                                    <div class="categories">
-                                        <span class="category ${location.category}">${categoryNames[location.category]}</span>
-                                    </div>
-                                    <div class="address">
-                                        <i class="fas fa-map-marker-alt"></i> ${location.address}
-                                    </div>
-                                    <p class="desc">${location.desc}</p>
-                                    <div class="buttons">
-                                        <button class="route-btn" 
-                                            onclick="getRoute('${location.address.replace(/'/g, "\\'")}')">
-                                            <i class="fas fa-route"></i> Маршрут
-                                        </button>
-                                        <button class="photo-btn" 
-                                            onclick="showPhotos('${location.name}', '${day.city}')">
-                                            <i class="fas fa-camera"></i> Фото
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('')}
+                `;
+                
+                day.locations.forEach(location => {
+                    const safeAddress = escapeHtml(location.address);
+                    const safeName = escapeHtml(location.name);
+                    const safeCity = escapeHtml(day.city);
+                    
+                    html += `
+                        <div class="location" data-id="${day.day}-${location.name.replace(/\s+/g, '-')}">
+                            <div class="location-header">
+                                <h3 class="location-name">${location.name}</h3>
+                            </div>
+                            <div class="categories">
+                                <span class="category ${location.category}">${categoryNames[location.category]}</span>
+                            </div>
+                            <div class="address">
+                                <i class="fas fa-map-marker-alt"></i> ${location.address}
+                            </div>
+                            <p class="desc">${location.desc}</p>
+                            <div class="buttons">
+                                <button class="route-btn" data-address="${safeAddress}">
+                                    <i class="fas fa-route btn-icon"></i> Маршрут
+                                </button>
+                                <button class="photo-btn" data-name="${safeName}" data-city="${safeCity}">
+                                    <i class="fas fa-camera btn-icon"></i> Фото
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
                         </div>
                     </div>
                 `;
-                container.innerHTML += dayHtml;
+            });
+            
+            domCache.container.innerHTML = html;
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Делегирование событий для кнопок
+            domCache.container.addEventListener('click', (e) => {
+                const target = e.target;
+                
+                // Обработка кнопки маршрута
+                if (target.closest('.route-btn')) {
+                    const btn = target.closest('.route-btn');
+                    const address = btn.dataset.address;
+                    getRoute(address);
+                }
+                
+                // Обработка кнопки фото
+                if (target.closest('.photo-btn')) {
+                    const btn = target.closest('.photo-btn');
+                    const name = btn.dataset.name;
+                    const city = btn.dataset.city;
+                    showPhotos(name, city);
+                }
             });
         }
 
+        // Построение маршрута
         async function getRoute(address) {
-            const loader = document.getElementById('loader');
+            showLoader();
+            
             try {
-                loader.style.display = 'block';
-                
                 if (!navigator.geolocation) {
                     throw new Error('Геолокация не поддерживается вашим браузером');
                 }
@@ -840,59 +907,93 @@
                 const position = await new Promise((resolve, reject) => {
                     navigator.geolocation.getCurrentPosition(resolve, reject, {
                         enableHighAccuracy: true,
-                        timeout: 10000,
+                        timeout: 8000,
                         maximumAge: 0
                     });
                 });
 
                 const coords = position.coords;
-                const isAndroid = /android/i.test(navigator.userAgent);
-                const isYandexBrowser = navigator.userAgent.includes('YaBrowser');
-
-                let yandexMapUrl;
-                if (isAndroid && isYandexBrowser) {
-                    yandexMapUrl = `intent://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}#Intent;scheme=yandexmaps;package=ru.yandex.yandexmaps;end`;
-                } else {
-                    yandexMapUrl = `yandexmaps://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
-                }
-
-                // Попытка открыть приложение
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = yandexMapUrl;
-                document.body.appendChild(iframe);
-
-                // Фолбек на веб-версию
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                    const webUrl = `https://yandex.ru/maps/?mode=routes&rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
-                    window.open(webUrl, '_blank');
-                }, 500);
+                openYandexMap(coords, address);
 
             } catch (error) {
-                console.error('Ошибка:', error);
-                let message = 'Ошибка при построении маршрута';
-                
-                if (error.code === error.PERMISSION_DENIED) {
-                    message = 'Разрешите доступ к геолокации в настройках браузера!';
-                } else if (error.code === error.TIMEOUT) {
-                    message = 'Не удалось получить ваше местоположение: превышено время ожидания';
-                }
-                
-                alert(message);
+                handleGeolocationError(error);
             } finally {
-                loader.style.display = 'none';
+                hideLoader();
             }
         }
 
+        // Открытие Яндекс.Карт
+        function openYandexMap(coords, address) {
+            const isAndroid = /android/i.test(navigator.userAgent);
+            const isYandexBrowser = navigator.userAgent.includes('YaBrowser');
+            const baseUrl = `https://yandex.ru/maps/?mode=routes&rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
+            
+            let yandexMapUrl;
+            
+            if (isAndroid && isYandexBrowser) {
+                yandexMapUrl = `intent://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}#Intent;scheme=yandexmaps;package=ru.yandex.yandexmaps;end`;
+            } else {
+                yandexMapUrl = `yandexmaps://build/route/?rtext=${coords.latitude},${coords.longitude}~${encodeURIComponent(address)}`;
+            }
+
+            // Попытка открыть приложение
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = yandexMapUrl;
+            document.body.appendChild(iframe);
+
+            // Фолбек на веб-версию
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+                window.open(baseUrl, '_blank');
+            }, 400);
+        }
+
+        // Показать фото
         function showPhotos(name, city) {
             const query = `${name}, ${city}, Россия`;
-            const url = `https://yandex.ru/images/search?text=${encodeURIComponent(query)}`;
+            const url = `https://yandex.ru/images/search?text=${encodeURIComponent(query)}&itype=jpg`;
             window.open(url, '_blank');
         }
 
-        // Инициализация при загрузке
-        window.onload = buildRoute;
+        // Обработка ошибок геолокации
+        function handleGeolocationError(error) {
+            console.error('Ошибка геолокации:', error);
+            let message = 'Ошибка при построении маршрута';
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = 'Разрешите доступ к геолокации в настройках браузера';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = 'Информация о местоположении недоступна';
+                    break;
+                case error.TIMEOUT:
+                    message = 'Превышено время ожидания определения местоположения';
+                    break;
+            }
+            
+            alert(message);
+        }
+
+        // Управление лоадером
+        function showLoader() {
+            domCache.loader.style.display = 'block';
+        }
+
+        function hideLoader() {
+            domCache.loader.style.display = 'none';
+        }
+
+        // Экранирование HTML
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 </html>
