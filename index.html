@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Золотое кольцо России - Гарантированный маршрут</title>
+    <title>Золотое кольцо России - Простой маршрут</title>
     <style>
         :root {
             --primary: #3498db;
@@ -368,7 +368,7 @@
     <div class="container">
         <header>
             <h1>⛪🚗 Золотое кольцо России</h1>
-            <p class="subtitle">Гарантированное открытие маршрута в Яндекс.Картах</p>
+            <p class="subtitle">Простое и надежное открытие маршрута</p>
             
             <div class="stats">
                 <div class="stat-card">
@@ -887,7 +887,7 @@
             });
         }
 
-        // 100% РАБОЧЕЕ РЕШЕНИЕ ДЛЯ ЯНДЕКС.КАРТ
+        // ПРОСТАЯ ФУНКЦИЯ ДЛЯ ПОСТРОЕНИЯ МАРШРУТА
         async function getRoute(address) {
             showLoader();
             
@@ -908,25 +908,16 @@
                 const startCoords = `${coords.latitude},${coords.longitude}`;
                 const endAddress = encodeURIComponent(address);
                 
-                // Основной URL для построения маршрута
-                const routeUrl = `https://yandex.ru/maps/?rtext=${startCoords}~${endAddress}&rtt=auto`;
+                // Формируем простую ссылку как в вашем примере
+                const simpleRouteUrl = `https://yandex.ru/maps/?mode=routes&rtext=${startCoords}~${endAddress}&rtt=auto`;
                 
-                // Параметры для приложения Яндекс.Карт
-                const appParams = {
-                    lat: coords.latitude,
-                    lon: coords.longitude,
-                    rtext: `${startCoords}~${endAddress}`,
-                    rtt: 'auto',
-                    z: '12'
-                };
-
-                // 1. Пытаемся открыть приложение
-                openYandexMaps(appParams);
+                // Пытаемся открыть приложение
+                openYandexMapsSimple(startCoords, endAddress);
                 
-                // 2. Фолбек на веб-версию через 800 мс
+                // Фолбек на веб-версию через 800 мс
                 setTimeout(() => {
                     if (!document.hidden) {
-                        window.open(routeUrl, '_blank');
+                        window.open(simpleRouteUrl, '_blank');
                     }
                 }, 800);
 
@@ -939,50 +930,39 @@
             }
         }
 
-        // УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ ОТКРЫТИЯ ЯНДЕКС.КАРТ
-        function openYandexMaps(params) {
+        // ПРОСТОЙ СПОСОБ ОТКРЫТИЯ ЯНДЕКС.КАРТ
+        function openYandexMapsSimple(startCoords, endAddress) {
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            if (!isMobile) {
-                return; // Для десктопов не используем deep links
-            }
+            if (!isMobile) return;
 
-            // Формируем URL для приложения
+            // Формируем простой URL для приложения
             let appUrl = '';
-            const queryString = Object.keys(params)
-                .map(key => `${key}=${encodeURIComponent(params[key])}`)
-                .join('&');
             
-            // Для Android
             if (/Android/i.test(navigator.userAgent)) {
-                appUrl = `yandexmaps://maps.yandex.ru/?${queryString}`;
+                // Android: Простая схема без лишних параметров
+                appUrl = `yandexmaps://build/route/?rtext=${startCoords}~${endAddress}&rtt=auto`;
                 
                 // Для Яндекс.Браузера
                 if (navigator.userAgent.includes('YaBrowser')) {
-                    appUrl = `intent://maps.yandex.ru/?${queryString}#Intent;scheme=yandexmaps;package=ru.yandex.yandexmaps;end`;
+                    appUrl = `intent://build/route/?rtext=${startCoords}~${endAddress}&rtt=auto#Intent;scheme=yandexmaps;package=ru.yandex.yandexmaps;end`;
                 }
-            }
-            // Для iOS
-            else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                appUrl = `yandexmaps://maps.yandex.ru/?${queryString}`;
+            } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                // iOS: Простая схема
+                appUrl = `yandexmaps://maps.yandex.ru/?rtext=${startCoords}~${endAddress}&rtt=auto`;
             }
             
             if (!appUrl) return;
             
             // Пытаемся открыть приложение
             try {
-                // Для Chrome на Android используем iframe
                 if (/Chrome/i.test(navigator.userAgent) && /Android/i.test(navigator.userAgent)) {
                     const iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = appUrl;
                     document.body.appendChild(iframe);
-                    setTimeout(() => {
-                        document.body.removeChild(iframe);
-                    }, 300);
-                } 
-                // Для других браузеров
-                else {
+                    setTimeout(() => document.body.removeChild(iframe), 300);
+                } else {
                     window.location.href = appUrl;
                 }
             } catch (e) {
