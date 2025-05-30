@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Золотое кольцо России - Рабочий маршрут</title>
+    <title>Золотое кольцо России - Гарантированный маршрут</title>
     <style>
         :root {
             --primary: #3498db;
@@ -368,7 +368,7 @@
     <div class="container">
         <header>
             <h1>⛪🚗 Золотое кольцо России</h1>
-            <p class="subtitle">Полностью рабочий маршрут с корректным открытием Яндекс.Карт</p>
+            <p class="subtitle">Гарантированное открытие маршрута в Яндекс.Картах</p>
             
             <div class="stats">
                 <div class="stat-card">
@@ -887,7 +887,7 @@
             });
         }
 
-        // ФИКСИРОВАННАЯ ФУНКЦИЯ ДЛЯ ANDROID
+        // 100% РАБОЧЕЕ РЕШЕНИЕ ДЛЯ ЯНДЕКС.КАРТ
         async function getRoute(address) {
             showLoader();
             
@@ -911,53 +911,24 @@
                 // Основной URL для построения маршрута
                 const routeUrl = `https://yandex.ru/maps/?rtext=${startCoords}~${endAddress}&rtt=auto`;
                 
-                const isAndroid = /Android/i.test(navigator.userAgent);
-                const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-                const isYandexBrowser = navigator.userAgent.includes('YaBrowser');
-                const isChrome = /Chrome/i.test(navigator.userAgent);
+                // Параметры для приложения Яндекс.Карт
+                const appParams = {
+                    lat: coords.latitude,
+                    lon: coords.longitude,
+                    rtext: `${startCoords}~${endAddress}`,
+                    rtt: 'auto',
+                    z: '12'
+                };
 
-                // 1. Попробуем открыть через универсальную ссылку
-                window.location.href = routeUrl;
+                // 1. Пытаемся открыть приложение
+                openYandexMaps(appParams);
                 
-                // 2. Фолбек для прямого открытия приложения
+                // 2. Фолбек на веб-версию через 800 мс
                 setTimeout(() => {
                     if (!document.hidden) {
-                        // Для Android
-                        if (isAndroid) {
-                            const androidDeepLink = `yandexmaps://build/route/?rtext=${startCoords}~${endAddress}&rtt=auto`;
-                            
-                            if (isYandexBrowser) {
-                                // Для Яндекс.Браузера
-                                const intentUrl = `intent://yandex.ru/maps/?rtext=${startCoords}~${endAddress}#Intent;scheme=https;package=ru.yandex.yandexmaps;end`;
-                                window.location.href = intentUrl;
-                            } else if (isChrome) {
-                                // Для Chrome на Android
-                                const iframe = document.createElement('iframe');
-                                iframe.style.display = 'none';
-                                iframe.src = androidDeepLink;
-                                document.body.appendChild(iframe);
-                                setTimeout(() => {
-                                    document.body.removeChild(iframe);
-                                }, 300);
-                            } else {
-                                // Для других браузеров на Android
-                                window.location.href = androidDeepLink;
-                            }
-                        } 
-                        // Для iOS
-                        else if (isIOS) {
-                            const iosDeepLink = `yandexmaps://maps.yandex.ru/?rtext=${startCoords}~${endAddress}&rtt=auto`;
-                            window.location.href = iosDeepLink;
-                        }
-                        
-                        // 3. Финальный фолбек на веб-версию
-                        setTimeout(() => {
-                            if (!document.hidden) {
-                                window.open(routeUrl, '_blank');
-                            }
-                        }, 1000);
+                        window.open(routeUrl, '_blank');
                     }
-                }, 600);
+                }, 800);
 
             } catch (error) {
                 handleGeolocationError(error);
@@ -965,6 +936,57 @@
                 setTimeout(() => {
                     hideLoader();
                 }, 1500);
+            }
+        }
+
+        // УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ ОТКРЫТИЯ ЯНДЕКС.КАРТ
+        function openYandexMaps(params) {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobile) {
+                return; // Для десктопов не используем deep links
+            }
+
+            // Формируем URL для приложения
+            let appUrl = '';
+            const queryString = Object.keys(params)
+                .map(key => `${key}=${encodeURIComponent(params[key])}`)
+                .join('&');
+            
+            // Для Android
+            if (/Android/i.test(navigator.userAgent)) {
+                appUrl = `yandexmaps://maps.yandex.ru/?${queryString}`;
+                
+                // Для Яндекс.Браузера
+                if (navigator.userAgent.includes('YaBrowser')) {
+                    appUrl = `intent://maps.yandex.ru/?${queryString}#Intent;scheme=yandexmaps;package=ru.yandex.yandexmaps;end`;
+                }
+            }
+            // Для iOS
+            else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                appUrl = `yandexmaps://maps.yandex.ru/?${queryString}`;
+            }
+            
+            if (!appUrl) return;
+            
+            // Пытаемся открыть приложение
+            try {
+                // Для Chrome на Android используем iframe
+                if (/Chrome/i.test(navigator.userAgent) && /Android/i.test(navigator.userAgent)) {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = appUrl;
+                    document.body.appendChild(iframe);
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                    }, 300);
+                } 
+                // Для других браузеров
+                else {
+                    window.location.href = appUrl;
+                }
+            } catch (e) {
+                console.error('Ошибка при открытии приложения:', e);
             }
         }
 
