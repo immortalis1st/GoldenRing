@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Золотое кольцо России - Рабочий маршрут</title>
+    <title>Золотое кольцо России - Маршрут</title>
     <style>
         :root {
             --primary: #3498db;
@@ -893,8 +893,7 @@
             });
         }
 
-        // УЛУЧШЕННАЯ ФУНКЦИЯ ПОСТРОЕНИЯ МАРШРУТА
-        async function getRoute(address) {
+       async function getRoute(address) {
             showLoader();
             
             try {
@@ -914,71 +913,78 @@
                 const startCoords = `${coords.latitude},${coords.longitude}`;
                 const endAddress = encodeURIComponent(address);
                 
-                // Универсальный URL для Яндекс.Карт
-                const yandexMapsUrl = `yandexmaps://maps.yandex.ru/?rtext=${startCoords}~${endAddress}&rtt=auto`;
-                const webUrl = `https://yandex.ru/maps/?rtext=${startCoords}~${endAddress}&rtt=auto`;
+                // Основной URL для построения маршрута
+                const routeUrl = `https://yandex.ru/maps/?rtext=${startCoords}~${endAddress}&rtt=auto`;
                 
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
                 const isYandexBrowser = navigator.userAgent.includes('YaBrowser');
                 const isChrome = /Chrome/i.test(navigator.userAgent);
+                const isSafari = /Safari/i.test(navigator.userAgent) && !isChrome;
 
                 // Попытка открыть приложение Яндекс.Карт
                 if (isMobile) {
-                    // Для iOS используем прямой вызов схемы
-                    if (isIOS) {
-                        window.location.href = yandexMapsUrl;
+                    // 1. Попробуем стандартный deep link
+                    const deepLink = `yandexmaps://build/route/?rtext=${startCoords}~${endAddress}&rtt=auto`;
+                    
+                    // 2. Для iOS - альтернативный формат
+                    const iosDeepLink = `yandexmaps://maps.yandex.ru/?rtext=${startCoords}~${endAddress}&rtt=auto`;
+                    
+                    // 3. Для Яндекс.Браузера на Android
+                    const yandexIntent = `intent://yandex.ru/maps/?rtext=${startCoords}~${endAddress}#Intent;scheme=https;package=ru.yandex.yandexmaps;end`;
+                    
+                    let appOpened = false;
+                    
+                    // Функция для проверки успешности открытия приложения
+                    const checkAppOpened = () => {
+                        if (!document.hidden) {
+                            window.open(routeUrl, '_blank');
+                        }
+                    };
+                    
+                    // Пытаемся открыть приложение
+                    try {
+                        // Для iOS Safari
+                        if (isIOS && isSafari) {
+                            window.location.href = deepLink;
+                            setTimeout(checkAppOpened, 500);
+                        } 
+                        // Для Яндекс.Браузера
+                        else if (isYandexBrowser) {
+                            window.location.href = yandexIntent;
+                            setTimeout(checkAppOpened, 400);
+                        } 
+                        // Для Chrome на Android
+                        else if (isChrome) {
+                            const iframe = document.createElement('iframe');
+                            iframe.style.display = 'none';
+                            iframe.src = deepLink;
+                            document.body.appendChild(iframe);
+                            setTimeout(() => {
+                                document.body.removeChild(iframe);
+                                checkAppOpened();
+                            }, 300);
+                        } 
+                        // Для других браузеров
+                        else {
+                            window.location.href = deepLink;
+                            setTimeout(checkAppOpened, 600);
+                        }
                         
-                        // Фолбек для iOS
-                        setTimeout(() => {
-                            if (!document.hidden) {
-                                window.open(webUrl, '_blank');
-                            }
-                        }, 500);
+                        // Отмечаем, что попытка открытия приложения была
+                        appOpened = true;
+                    } catch (e) {
+                        console.error('Ошибка при открытии приложения:', e);
                     }
-                    // Для Android с Яндекс.Браузером
-                    else if (isYandexBrowser) {
-                        const intentUrl = `intent://yandex.ru/maps/?rtext=${startCoords}~${endAddress}#Intent;scheme=https;package=ru.yandex.yandexmaps;end`;
-                        window.location.href = intentUrl;
-                        
-                        // Фолбек для Яндекс.Браузера
-                        setTimeout(() => {
-                            if (!document.hidden) {
-                                window.open(webUrl, '_blank');
-                            }
-                        }, 400);
-                    }
-                    // Для других Android-браузеров (Chrome и др.)
-                    else if (isChrome) {
-                        // Попытка открыть приложение через iframe
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.src = yandexMapsUrl;
-                        document.body.appendChild(iframe);
-                        
-                        // Фолбек через 300 мс
-                        setTimeout(() => {
-                            document.body.removeChild(iframe);
-                            if (!document.hidden) {
-                                window.open(webUrl, '_blank');
-                            }
-                        }, 300);
-                    }
-                    // Для других мобильных браузеров
-                    else {
-                        window.location.href = yandexMapsUrl;
-                        
-                        // Фолбек через 600 мс
-                        setTimeout(() => {
-                            if (!document.hidden) {
-                                window.open(webUrl, '_blank');
-                            }
-                        }, 600);
+                    
+                    // Если не удалось инициировать открытие приложения
+                    if (!appOpened) {
+                        window.open(routeUrl, '_blank');
                     }
                 } 
                 // Для десктопов
                 else {
-                    window.open(webUrl, '_blank');
+                    window.open(routeUrl, '_blank');
                 }
 
             } catch (error) {
@@ -987,6 +993,7 @@
                 hideLoader();
             }
         }
+
 
         // Показать фото
         function showPhotos(name, city) {
